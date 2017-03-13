@@ -1,12 +1,18 @@
+package week1;
+
 import java.io.*;
 import java.util.StringTokenizer;
 
-public class ABPPlus {
+public class ABPower {
 
     public static void main(String[] args) throws IOException {
+
         try (PrintWriter out = newOutput()) {
             FastScanner in = newInput();
-            out.println(in.nextInt() + in.nextInt());
+            long f=in.nextLong();
+            long s=in.nextLong();
+            long l=f + s*s;
+            out.println(l);
         }
     }
 

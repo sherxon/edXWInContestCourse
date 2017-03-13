@@ -2,33 +2,59 @@ import java.io.*;
 import java.util.StringTokenizer;
 
 /**
- * Created by sherxon on 3/7/17.
+ * Created by sherxon on 3/13/17.
  */
-public class CreateaTeam {
-    public static void main(String[] args) throws IOException {
+public class ImplementStack {
 
-        try (PrintWriter out = newOutput()) {
-            FastScanner in = newInput();
-            int[][] a= new int[3][3];
-            for (int i = 0; i < a.length; i++)
-                for (int j = 0; j < a[i].length; j++)
-                    a[i][j]=in.nextInt();
-            long sum=0;
-            long max=-1;
-            for (int i = 0; i < a.length; i++) {
-                for (int j = 0; j < a.length; j++) {
-                    if(j==i)continue;
-                    for (int k = 0; k < a.length; k++) {
-                        if(k==i || k==j)continue;
-                        sum=a[2][k] * a[2][k] + a[1][j] * a[1][j] + a[0][i] * a[0][i];
-                        max=Math.max(sum,max);
-                    }
-                }
-            }
-            out.println(Math.sqrt(max));
+    class ListNode {
+        int val;
+        ListNode next;
+        ListNode prev;
+
+        public ListNode(int val) {
+            this.val = val;
         }
     }
 
+    public static void main(String[] args) throws IOException {
+        ImplementStack stack= new ImplementStack();
+        FastScanner in = newInput();
+        int n=Integer.parseInt(in.nextLine());
+        for (int i = 0; i < n; i++) {
+            String[] s=in.nextLine().split(" ");
+            if(s[0].charAt(0)=='+'){
+                stack.push(Integer.parseInt(s[1]));
+            }else{
+                stack.pop();
+            }
+        }
+        stack.out.flush();
+        stack.out.close();
+    }
+    ListNode tail;
+    PrintWriter out;
+    public ImplementStack() {
+        try {
+            out=newOutput();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void push(Integer i){
+        if(tail==null)tail=new ListNode(i);
+        else {
+            ListNode temp=tail;
+            tail.next=new ListNode(i);
+            tail=tail.next;
+            tail.prev=temp;
+        }
+    }
+    public void pop(){
+        out.println(tail.val);
+
+        tail=tail.prev;
+    }
 
     static class FastScanner {
         static BufferedReader br;
@@ -54,6 +80,15 @@ public class CreateaTeam {
             }
             return st.nextToken();
         }
+        String nextLine(){
+            String st="";
+            try {
+                st=br.readLine();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return  st;
+        }
         int nextInt() {
             return Integer.parseInt(next());
         }
@@ -72,6 +107,7 @@ public class CreateaTeam {
             return new FastScanner(System.in);
         }
     }
+
     static PrintWriter newOutput() throws IOException {
         if (System.getProperty("JUDGE") != null) {
             return new PrintWriter("output.txt");
@@ -79,5 +115,6 @@ public class CreateaTeam {
             return new PrintWriter(System.out);
         }
     }
+
 
 }

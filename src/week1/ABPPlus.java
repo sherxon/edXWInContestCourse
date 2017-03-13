@@ -1,31 +1,16 @@
+package week1;
+
 import java.io.*;
-import java.util.Arrays;
 import java.util.StringTokenizer;
 
-/**
- * Created by sherxon on 3/8/17.
- */
-public class WintheCompetition {
+public class ABPPlus {
 
     public static void main(String[] args) throws IOException {
-
         try (PrintWriter out = newOutput()) {
             FastScanner in = newInput();
-            int n=in.nextInt();
-            long[] a=new long[n];
-            for (int i = 0; i < n; i++) {
-                a[i]=in.nextLong();
-            }
-            Arrays.sort(a);
-            long cost=0;
-            int i=0;
-            while (i<a.length &&  cost+a[i]<=300*60){
-                cost+=a[i++];
-            }
-            out.println(i);
+            out.println(in.nextInt() + in.nextInt());
         }
     }
-
 
     static class FastScanner {
         static BufferedReader br;
@@ -76,5 +61,6 @@ public class WintheCompetition {
             return new PrintWriter(System.out);
         }
     }
+
 
 }

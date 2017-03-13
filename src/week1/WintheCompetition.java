@@ -1,18 +1,33 @@
+package week1;
+
 import java.io.*;
+import java.util.Arrays;
 import java.util.StringTokenizer;
 
-public class ABPower {
+/**
+ * Created by sherxon on 3/8/17.
+ */
+public class WintheCompetition {
 
     public static void main(String[] args) throws IOException {
 
         try (PrintWriter out = newOutput()) {
             FastScanner in = newInput();
-            long f=in.nextLong();
-            long s=in.nextLong();
-            long l=f + s*s;
-            out.println(l);
+            int n=in.nextInt();
+            long[] a=new long[n];
+            for (int i = 0; i < n; i++) {
+                a[i]=in.nextLong();
+            }
+            Arrays.sort(a);
+            long cost=0;
+            int i=0;
+            while (i<a.length &&  cost+a[i]<=300*60){
+                cost+=a[i++];
+            }
+            out.println(i);
         }
     }
+
 
     static class FastScanner {
         static BufferedReader br;
@@ -63,6 +78,5 @@ public class ABPower {
             return new PrintWriter(System.out);
         }
     }
-
 
 }

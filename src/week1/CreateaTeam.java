@@ -1,25 +1,38 @@
+package week1;
+
 import java.io.*;
 import java.util.StringTokenizer;
 
 /**
- * Created by sherxon on 3/8/17.
+ * Created by sherxon on 3/7/17.
  */
-public class PuttheChairstheRightWay {
+public class CreateaTeam {
     public static void main(String[] args) throws IOException {
 
         try (PrintWriter out = newOutput()) {
             FastScanner in = newInput();
-            int a=in.nextInt();
-            int b=in.nextInt();
-            int c=in.nextInt();
-            double p=(a+b+c)/2.0;
-            out.println(p/3);
+            int[][] a= new int[3][3];
+            for (int i = 0; i < a.length; i++)
+                for (int j = 0; j < a[i].length; j++)
+                    a[i][j]=in.nextInt();
+            long sum=0;
+            long max=-1;
+            for (int i = 0; i < a.length; i++) {
+                for (int j = 0; j < a.length; j++) {
+                    if(j==i)continue;
+                    for (int k = 0; k < a.length; k++) {
+                        if(k==i || k==j)continue;
+                        sum=a[2][k] * a[2][k] + a[1][j] * a[1][j] + a[0][i] * a[0][i];
+                        max=Math.max(sum,max);
+                    }
+                }
+            }
+            out.println(Math.sqrt(max));
         }
     }
 
 
-
-static class FastScanner {
+    static class FastScanner {
         static BufferedReader br;
         static StringTokenizer st;
 
