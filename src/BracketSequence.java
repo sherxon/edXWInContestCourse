@@ -1,61 +1,38 @@
 import java.io.*;
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.Stack;
 import java.util.StringTokenizer;
 
 /**
- * Created by sherxon on 3/13/17.
+ * Created by sherxon on 3/15/17.
  */
-public class QueuewithMinimum {
-    PrintWriter out;
-    Queue<Long> queue= new LinkedList<>();
-    LinkedList<Long> mins= new LinkedList<>();
-
-    public QueuewithMinimum() {
-        try {
-            out=newOutput();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
+public class BracketSequence {
     public static void main(String[] args) throws IOException {
-        QueuewithMinimum minimum= new QueuewithMinimum();
-        FastScanner in = newInput();
-        int n=Integer.parseInt(in.nextLine());
-        for (int i = 0; i < n; i++) {
-            String[] s=in.nextLine().split(" ");
-            if(s[0].charAt(0)=='+'){
-                minimum.push(Long.parseLong(s[1]));
-            }else if(s[0].charAt(0)=='?'){
-                minimum.min();
-            }else{
-                minimum.pop();
+        try (PrintWriter out = newOutput()) {
+            FastScanner in = newInput();
+            int n=Integer.parseInt(in.nextLine());
+            Stack<Character> stack=new Stack<>();
+
+            for (int i = 0; i < n; i++) {
+                String s=in.nextLine();
+                boolean b=true;
+                stack=new Stack<>();
+                for (int j = 0; j < s.length(); j++) {
+                    char c=s.charAt(j);
+                    if(c==')'){
+                        if(stack.isEmpty() || stack.peek()!='(') b=false;
+                        else stack.pop();
+                    } else if(c==']'){
+                        if(stack.isEmpty() || stack.peek()!='[') b=false;
+                        else stack.pop();
+                    }else{
+                        stack.add(c);
+                    }
+                    if(!b)break;
+                }
+                out.println(b && stack.isEmpty() ? "YES" : "NO");
             }
+
         }
-        minimum.out.flush();
-        minimum.out.close();
-    }
-
-    private void pop() {
-        long last=queue.poll();
-       if(mins.peek().compareTo(last)==0)mins.poll();
-    }
-
-    private void min() {
-        out.println(mins.peek());
-    }
-
-    private void push(long i) {
-        queue.add(i);
-       if(mins.isEmpty() ||  mins.peekLast().compareTo(i)<=0)
-           mins.add(i);
-        else{
-           while (!mins.isEmpty() && mins.peekLast().compareTo(i)>0){
-               mins.removeLast();
-           }
-           mins.add(i);
-       }
     }
 
     static class FastScanner {

@@ -1,61 +1,30 @@
 import java.io.*;
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.Stack;
 import java.util.StringTokenizer;
 
 /**
- * Created by sherxon on 3/13/17.
+ * Created by sherxon on 3/15/17.
  */
-public class QueuewithMinimum {
-    PrintWriter out;
-    Queue<Long> queue= new LinkedList<>();
-    LinkedList<Long> mins= new LinkedList<>();
-
-    public QueuewithMinimum() {
-        try {
-            out=newOutput();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
+public class PostfixNotation {
     public static void main(String[] args) throws IOException {
-        QueuewithMinimum minimum= new QueuewithMinimum();
-        FastScanner in = newInput();
-        int n=Integer.parseInt(in.nextLine());
-        for (int i = 0; i < n; i++) {
+        try (PrintWriter out = newOutput()) {
+            FastScanner in = newInput();
+            int n=Integer.parseInt(in.nextLine());
+            Stack<Integer> stack=new Stack<>();
             String[] s=in.nextLine().split(" ");
-            if(s[0].charAt(0)=='+'){
-                minimum.push(Long.parseLong(s[1]));
-            }else if(s[0].charAt(0)=='?'){
-                minimum.min();
-            }else{
-                minimum.pop();
+            for (int i = 0; i < s.length; i++) {
+
+                if(s[i].length()==1 && !Character.isDigit(s[i].charAt(0))){
+                    char c=s[i].charAt(0);
+                    if(c=='+')stack.push(stack.pop()+stack.pop());
+                    else if(c=='*')stack.push(stack.pop()*stack.pop());
+                    else if(c=='-')stack.push((stack.pop()-stack.pop())*-1);
+                }else{
+                    stack.add(Integer.parseInt(s[i]));
+                }
             }
+            out.println(stack.peek());
         }
-        minimum.out.flush();
-        minimum.out.close();
-    }
-
-    private void pop() {
-        long last=queue.poll();
-       if(mins.peek().compareTo(last)==0)mins.poll();
-    }
-
-    private void min() {
-        out.println(mins.peek());
-    }
-
-    private void push(long i) {
-        queue.add(i);
-       if(mins.isEmpty() ||  mins.peekLast().compareTo(i)<=0)
-           mins.add(i);
-        else{
-           while (!mins.isEmpty() && mins.peekLast().compareTo(i)>0){
-               mins.removeLast();
-           }
-           mins.add(i);
-       }
     }
 
     static class FastScanner {
