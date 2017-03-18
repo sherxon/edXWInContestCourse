@@ -2,58 +2,19 @@ import java.io.*;
 import java.util.StringTokenizer;
 
 /**
- * Created by sherxon on 3/13/17.
+ * Created by sherxon on 3/17/17.
  */
-public class ImplementQueue {
-
-   private class ListNode {
-        int val;
-        ListNode next;
-        ListNode prev;
-
-        public ListNode(int val) {
-            this.val = val;
-        }
-    }
-
+public class AirStacks {
     public static void main(String[] args) throws IOException {
-        ImplementQueue stack= new ImplementQueue();
-        FastScanner in = newInput();
-        int n=Integer.parseInt(in.nextLine());
-        for (int i = 0; i < n; i++) {
-            String[] s=in.nextLine().split(" ");
-            if(s[0].charAt(0)=='+'){
-                stack.push(Integer.parseInt(s[1]));
-            }else{
-                stack.pop();
-            }
-        }
-        stack.out.flush();
-        stack.out.close();
-    }
-    ListNode tail;
-    ListNode root;
-    PrintWriter out;
-    public ImplementQueue() {
-        try {
-            out=newOutput();
-        } catch (IOException e) {
-            e.printStackTrace();
+        try (PrintWriter out = newOutput()) {
+            FastScanner in = newInput();
+            out.println(in.nextInt() + in.nextInt());
         }
     }
 
-    public void push(Integer i){
-        if(root==null)root=tail=new ListNode(i);
-        else {
-            ListNode temp=tail;
-            tail.next=new ListNode(i);
-            tail=tail.next;
-            tail.prev=temp;
-        }
-    }
-    public void pop(){
-        out.println(root.val);
-        root=root.next;
+   private static class ListNode{
+        int size;
+
     }
 
     static class FastScanner {
@@ -80,15 +41,6 @@ public class ImplementQueue {
             }
             return st.nextToken();
         }
-        String nextLine(){
-            String st="";
-            try {
-                st=br.readLine();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return  st;
-        }
         int nextInt() {
             return Integer.parseInt(next());
         }
@@ -107,7 +59,6 @@ public class ImplementQueue {
             return new FastScanner(System.in);
         }
     }
-
     static PrintWriter newOutput() throws IOException {
         if (System.getProperty("JUDGE") != null) {
             return new PrintWriter("output.txt");
@@ -115,6 +66,4 @@ public class ImplementQueue {
             return new PrintWriter(System.out);
         }
     }
-
-
 }

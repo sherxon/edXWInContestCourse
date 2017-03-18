@@ -6,7 +6,7 @@ import java.util.StringTokenizer;
  */
 public class ImplementStack {
 
-    class ListNode {
+   private class ListNode {
         int val;
         ListNode next;
         ListNode prev;

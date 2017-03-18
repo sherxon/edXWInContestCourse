@@ -12,7 +12,7 @@ public class ABPPlus {
         }
     }
 
-    static class FastScanner {
+    private static class FastScanner {
         static BufferedReader br;
         static StringTokenizer st;
 
