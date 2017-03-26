@@ -1,41 +1,61 @@
 import java.io.*;
-import java.util.Stack;
 import java.util.StringTokenizer;
 
 /**
- * Created by sherxon on 3/15/17.
+ * Created by sherxon on 3/25/17.
  */
-public class BracketSequence {
+public class Inversions {
+   static int count=0;
     public static void main(String[] args) throws IOException {
         try (PrintWriter out = newOutput()) {
             FastScanner in = newInput();
-            int n=Integer.parseInt(in.nextLine());
-            Stack<Character> stack=new Stack<>();
-
+            int n=in.nextInt();
+            int[] a=new int[n];
             for (int i = 0; i < n; i++) {
-                String s=in.nextLine();
-                boolean b=true;
-                stack=new Stack<>();
-                for (int j = 0; j < s.length(); j++) {
-                    char c=s.charAt(j);
-                    if(c==')'){
-                        if(stack.isEmpty() || stack.peek()!='(') b=false;
-                        else stack.pop();
-                    } else if(c==']'){
-                        if(stack.isEmpty() || stack.peek()!='[') b=false;
-                        else stack.pop();
-                    }else{
-                        stack.add(c);
-                    }
-                    if(!b)break;
-                }
-                out.println(b && stack.isEmpty() ? "YES" : "NO");
+                a[i]=in.nextInt();
             }
-
+            mergeSort(a, out);
+            for (int i = 0; i < a.length; i++) {
+                out.print(a[i] + " ");
+            }
+            System.out.println(count);
         }
     }
 
-    static class FastScanner {
+    private static void mergeSort(int[] a, PrintWriter out) {
+        int[] b= new int[a.length];
+        mergeSort(a, 0, a.length-1, b, out);
+    }
+
+    private static void mergeSort(int[] a, int lo, int hi, int[] b, PrintWriter out) {
+        if(lo>=hi)return;
+
+        int mid=lo+(hi-lo)/2;
+        mergeSort(a, lo, mid, b, out);
+        mergeSort(a, mid+1, hi, b, out);
+        merge(a, lo, mid, hi, b, out);
+
+    }
+
+    private static void merge(int[] a, int lo, int mid, int hi, int[] b, PrintWriter out) {
+        for (int i = lo; i <=hi; i++) {
+            b[i]=a[i];
+        }
+        int i=lo;
+        int j=mid+1;
+        for (int k = lo; k <=hi; k++) {
+            if( (j>hi) || (i<mid+1 &&  b[i]>b[j])){
+                count++;
+                out.println(b[i] + " " + b[j] + " " + count);
+            }
+            if(i>mid)a[k]=b[j++];
+            else if(j>hi)a[k]=b[i++];
+            else if(b[i]<b[j]) a[k]=b[i++];
+            else a[k]=b[j++];
+        }
+    }
+
+    private static class FastScanner {
         static BufferedReader br;
         static StringTokenizer st;
 
@@ -58,15 +78,6 @@ public class BracketSequence {
                 }
             }
             return st.nextToken();
-        }
-        String nextLine(){
-            String st="";
-            try {
-                st=br.readLine();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return  st;
         }
         int nextInt() {
             return Integer.parseInt(next());
@@ -93,4 +104,5 @@ public class BracketSequence {
             return new PrintWriter(System.out);
         }
     }
+
 }

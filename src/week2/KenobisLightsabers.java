@@ -1,33 +1,75 @@
+package week2;
+
 import java.io.*;
-import java.util.Stack;
 import java.util.StringTokenizer;
 
 /**
- * Created by sherxon on 3/15/17.
+ * Created by sherxon on 3/17/17.
  */
-public class PostfixNotation {
+public class KenobisLightsabers {
+   static ListNode head=null;
+   static ListNode tail=null;
+   static ListNode mid=null;
+
     public static void main(String[] args) throws IOException {
         try (PrintWriter out = newOutput()) {
             FastScanner in = newInput();
             int n=Integer.parseInt(in.nextLine());
-            Stack<Integer> stack=new Stack<>();
-            String[] s=in.nextLine().split(" ");
-            for (int i = 0; i < s.length; i++) {
+            int count=0;
+            for (int i = 0; i < n; i++) {
+                String[] s=in.nextLine().split(" ");
+                if(s[0].equals("add")){
+                    count++;
+                    int k=Integer.parseInt(s[1]);
+                    if(head==null)
+                        head=mid=tail=new ListNode(k);
+                    else{
+                        ListNode newNode=new ListNode(k);
+                        tail.next=newNode;
+                        newNode.prev=tail;
+                        tail=tail.next;
+                    }
+                    if(count%2==0 && count!=2) mid=mid.next;
+                }else if(s[0].equals("take")){
+                    count--;
+                    tail=tail.prev;
+                    if(tail==null)head=null;
+                    else tail.next=null;
 
-                if(s[i].length()==1 && !Character.isDigit(s[i].charAt(0))){
-                    char c=s[i].charAt(0);
-                    if(c=='+')stack.push(stack.pop()+stack.pop());
-                    else if(c=='*')stack.push(stack.pop()*stack.pop());
-                    else if(c=='-')stack.push((stack.pop()-stack.pop())*-1);
+                    if(count%2!=0) mid=mid.prev;
                 }else{
-                    stack.add(Integer.parseInt(s[i]));
+                    if(head==null || head.next==null)continue;
+                    ListNode newHead=mid.next;
+                    mid.next=null; // break the link;
+                    newHead.prev=null;
+                    tail.next=head;
+                    head.prev=tail;
+                    head=newHead;
+                    ListNode temp=mid;
+                    if(count%2==0)mid=tail;
+                    else mid=tail.prev;
+                    tail=temp;
                 }
             }
-            out.println(stack.peek());
+            out.println(count);
+            while (head!=null){
+                out.print(head.val + " ");
+                head=head.next;
+            }
+        }
+    }
+    private static class ListNode{
+        ListNode next;
+        ListNode prev;
+
+        int val;
+
+        public ListNode(int val) {
+            this.val = val;
         }
     }
 
-    static class FastScanner {
+    private static class FastScanner {
         static BufferedReader br;
         static StringTokenizer st;
 
@@ -85,4 +127,5 @@ public class PostfixNotation {
             return new PrintWriter(System.out);
         }
     }
+
 }

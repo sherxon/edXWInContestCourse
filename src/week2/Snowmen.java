@@ -1,73 +1,54 @@
+package week2;
+
 import java.io.*;
 import java.util.StringTokenizer;
 
 /**
- * Created by sherxon on 3/17/17.
+ * Created by sherxon on 3/16/17.
  */
-public class KenobisLightsabers {
-   static ListNode head=null;
-   static ListNode tail=null;
-   static ListNode mid=null;
-
+public class Snowmen {
     public static void main(String[] args) throws IOException {
         try (PrintWriter out = newOutput()) {
             FastScanner in = newInput();
-            int n=Integer.parseInt(in.nextLine());
-            int count=0;
-            for (int i = 0; i < n; i++) {
-                String[] s=in.nextLine().split(" ");
-                if(s[0].equals("add")){
-                    count++;
-                    int k=Integer.parseInt(s[1]);
-                    if(head==null)
-                        head=mid=tail=new ListNode(k);
-                    else{
-                        ListNode newNode=new ListNode(k);
-                        tail.next=newNode;
-                        newNode.prev=tail;
-                        tail=tail.next;
-                    }
-                    if(count%2==0 && count!=2) mid=mid.next;
-                }else if(s[0].equals("take")){
-                    count--;
-                    tail=tail.prev;
-                    if(tail==null)head=null;
-                    else tail.next=null;
-
-                    if(count%2!=0) mid=mid.prev;
-                }else{
-                    if(head==null || head.next==null)continue;
-                    ListNode newHead=mid.next;
-                    mid.next=null; // break the link;
-                    newHead.prev=null;
-                    tail.next=head;
-                    head.prev=tail;
-                    head=newHead;
-                    ListNode temp=mid;
-                    if(count%2==0)mid=tail;
-                    else mid=tail.prev;
-                    tail=temp;
+            int n=in.nextInt();
+            ListNode[] a= new ListNode[n+1];
+            long[] b= new long[n+1];
+            int index=in.nextInt();
+            int val=in.nextInt();
+            a[0]=new ListNode(0);
+            a[index+1]=new ListNode(a[0], val);
+            b[1]=val;
+            long sum=val;
+            for (int i = 2; i < n+1; i++) {
+                int ii=in.nextInt();
+                 val=in.nextInt();
+                if(val==0) {
+                    a[i]=a[ii].prev;
+                    b[i]=b[ii]-a[ii].val;
+                } else {
+                    a[i]=new ListNode(a[ii], val);
+                    b[i]=b[ii]+val;
                 }
+                sum+=b[i];
             }
-            out.println(count);
-            while (head!=null){
-                out.print(head.val + " ");
-                head=head.next;
-            }
+            out.println(sum);
         }
     }
     private static class ListNode{
-        ListNode next;
         ListNode prev;
-
         int val;
 
         public ListNode(int val) {
             this.val = val;
         }
+
+        public ListNode(ListNode prev, int val) {
+            this.prev = prev;
+            this.val = val;
+        }
     }
 
-    private static class FastScanner {
+    static class FastScanner {
         static BufferedReader br;
         static StringTokenizer st;
 

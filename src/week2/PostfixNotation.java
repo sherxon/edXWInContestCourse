@@ -1,59 +1,32 @@
+package week2;
+
 import java.io.*;
+import java.util.Stack;
 import java.util.StringTokenizer;
 
 /**
- * Created by sherxon on 3/13/17.
+ * Created by sherxon on 3/15/17.
  */
-public class ImplementStack {
-
-   private class ListNode {
-        int val;
-        ListNode next;
-        ListNode prev;
-
-        public ListNode(int val) {
-            this.val = val;
-        }
-    }
-
+public class PostfixNotation {
     public static void main(String[] args) throws IOException {
-        ImplementStack stack= new ImplementStack();
-        FastScanner in = newInput();
-        int n=Integer.parseInt(in.nextLine());
-        for (int i = 0; i < n; i++) {
+        try (PrintWriter out = newOutput()) {
+            FastScanner in = newInput();
+            int n=Integer.parseInt(in.nextLine());
+            Stack<Integer> stack=new Stack<>();
             String[] s=in.nextLine().split(" ");
-            if(s[0].charAt(0)=='+'){
-                stack.push(Integer.parseInt(s[1]));
-            }else{
-                stack.pop();
+            for (int i = 0; i < s.length; i++) {
+
+                if(s[i].length()==1 && !Character.isDigit(s[i].charAt(0))){
+                    char c=s[i].charAt(0);
+                    if(c=='+')stack.push(stack.pop()+stack.pop());
+                    else if(c=='*')stack.push(stack.pop()*stack.pop());
+                    else if(c=='-')stack.push((stack.pop()-stack.pop())*-1);
+                }else{
+                    stack.add(Integer.parseInt(s[i]));
+                }
             }
+            out.println(stack.peek());
         }
-        stack.out.flush();
-        stack.out.close();
-    }
-    ListNode tail;
-    PrintWriter out;
-    public ImplementStack() {
-        try {
-            out=newOutput();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void push(Integer i){
-        if(tail==null)tail=new ListNode(i);
-        else {
-            ListNode temp=tail;
-            tail.next=new ListNode(i);
-            tail=tail.next;
-            tail.prev=temp;
-        }
-    }
-    public void pop(){
-        out.println(tail.val);
-
-        tail=tail.prev;
     }
 
     static class FastScanner {
@@ -107,7 +80,6 @@ public class ImplementStack {
             return new FastScanner(System.in);
         }
     }
-
     static PrintWriter newOutput() throws IOException {
         if (System.getProperty("JUDGE") != null) {
             return new PrintWriter("output.txt");
@@ -115,6 +87,4 @@ public class ImplementStack {
             return new PrintWriter(System.out);
         }
     }
-
-
 }
