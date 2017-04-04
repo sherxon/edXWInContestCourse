@@ -10,24 +10,35 @@ public class AntiQuickSort {
         try (PrintWriter out = newOutput()) {
             FastScanner in = newInput();
             int n=in.nextInt();
+
+            boolean x=n%2==0 && n>3;
             int[] a= new int[n];
+            int ii=n-1;
+            int jj=0;
+            int count=1;
             for (int i = 0; i < a.length; i++) {
-                a[i]=i+1;
+                if(x){
+                    a[ii--]=count++;
+                }else{
+                    a[jj++]=count++;
+                }
+                x=!x;
             }
-            if(a.length>1)
-            rotate(a, n/2);
             for (int i = 0; i < a.length; i++) {
-                out.print(a[i] + " ");
+                if(i!=a.length-1)
+                    out.print(a[i] + " ");
+                else
+                    out.print(a[i]);
             }
             //out.println(Arrays.toString(a));
         }
     }
 
     private static void rotate(int[] a, int k) {
-        //reverse(a, 0, a.length - 1);
-        reverse(a, k, a.length - 1);
         reverse(a, 0, k-1);
-       // System.out.println(Arrays.toString(a));
+        reverse(a, k, a.length - 1);
+        //if(a.length%2==0 && a.length>2)
+      //  reverse(a, 0, a.length - 1);
 
         //System.out.println(Arrays.toString(a));
 

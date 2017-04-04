@@ -1,5 +1,4 @@
 import java.io.*;
-import java.util.PriorityQueue;
 import java.util.StringTokenizer;
 
 /**
@@ -12,32 +11,30 @@ public class Drying {
         try (PrintWriter out = newOutput()) {
             FastScanner in = newInput();
             n=in.nextInt();
-            //int[] a= new int[n];
-            PriorityQueue<Integer> q= new PriorityQueue<>(n, (a,b)->b.compareTo(a));
+            int[] a= new int[n];
+
             for (int i = 0; i < n; i++) {
-                q.add(in.nextInt());
+                a[i]=in.nextInt();
             }
             int time=0;
             int k=in.nextInt();
-            if(q.size()==1){
-                out.print((int)Math.ceil(q.peek()*1.0/k));
+            if(a.length==1){
+                out.print((int)Math.ceil(a[0]*1.0/k));
             }else{
-                /*Arrays.sort(a);
-                int n=a.length-1;
-                int max;
-                while (a[n]-time>0){
-                    a[n]-=(k-1);
-                    time++;
-                    Arrays.sort(a);
-                }*/
-                //heapify(a);
-                int max;
-                while (q.peek()-time>0){
-                    q.add(q.poll()-(k-1));
-                    /*a[0]-=(k-1);
-                    makeHeap(0, a);*/
+                heapify(a);
+                int times;
+                while (a[0]-time>0){
+                     times=(a[0]-Math.max(a[1], a[2]))/(k-1);
+                    if(times>0){
+                        a[0]-=(k-1)*times;
+                        makeHeap(0, a);
+                        time+=times;
+                    }else{
+                        a[0]-=(k-1);
+                        makeHeap(0, a);
+                        time++;
+                    }
                     //System.out.println(Arrays.toString(a));
-                    time++;
                 }
                 out.print(time);
             }
@@ -63,6 +60,7 @@ public class Drying {
         int max=i;
         if(left<n && a[left]>a[i])max=left;
         if(right<n && a[right]>a[max])max=right;
+        if(a[max]<=0)return;
         if(max!=i){
             int temp=a[i];
             a[i]=a[max];
