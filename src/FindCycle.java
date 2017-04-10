@@ -1,53 +1,36 @@
 import java.io.*;
-import java.util.StringTokenizer;
+import java.util.*;
 
 /**
- * Created by sherxon on 3/25/17.
+ * Created by sherxon on 4/4/17.
  */
-public class Sorting {
+public class FindCycle {
     public static void main(String[] args) throws IOException {
         try (PrintWriter out = newOutput()) {
             FastScanner in = newInput();
             int n=in.nextInt();
-            int[] a=new int[n];
-            for (int i = 0; i < n; i++) {
-                a[i]=in.nextInt();
-            }
-            mergeSort(a, out);
-            for (int i = 0; i < a.length; i++) {
-                out.print(a[i] + " ");
-            }
+            int m=in.nextInt();
+
+            out.println();
         }
     }
 
-    private static void mergeSort(int[] a, PrintWriter out) {
-        int[] b= new int[a.length];
-        mergeSort(a, 0, a.length-1, b, out);
-    }
-
-    private static void mergeSort(int[] a, int lo, int hi, int[] b, PrintWriter out) {
-        if(lo>=hi)return;
-
-        int mid=lo+(hi-lo)/2;
-        mergeSort(a, lo, mid, b, out);
-        mergeSort(a, mid+1, hi, b, out);
-        merge(a, lo, mid, hi, b, out);
-
-    }
-
-    private static void merge(int[] a, int lo, int mid, int hi, int[] b, PrintWriter out) {
-        for (int i = lo; i <=hi; i++) {
-            b[i]=a[i];
+    private static class Graph{
+        int n;
+        Map<Integer, List<Integer>> map;
+        public Graph(int n) {
+            this.n = n;
+            map= new HashMap<>(n/2);
         }
-        int i=lo;
-        int j=mid+1;
-        for (int k = lo; k <=hi; k++) {
-            if(i>mid)a[k]=b[j++];
-            else if(j>hi)a[k]=b[i++];
-            else if(b[i]<b[j])a[k]=b[i++];
-            else a[k]=b[j++];
+        void addEdge(Integer from, Integer to){
+            if(!map.containsKey(from))
+                map.put(from, new ArrayList<>());
+            if(!map.containsKey(to))
+                map.put(to, new ArrayList<>());
+            map.get(from).add(to);
         }
-        out.println(lo+1 + " " + (hi+1) + " " + a[lo] + " " + a[hi]);
+
+
     }
 
     private static class FastScanner {

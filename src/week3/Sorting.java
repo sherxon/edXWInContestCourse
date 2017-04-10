@@ -1,83 +1,55 @@
+package week3;
+
 import java.io.*;
 import java.util.StringTokenizer;
 
 /**
- * Created by sherxon on 3/27/17.
+ * Created by sherxon on 3/25/17.
  */
-public class Drying {
-
-    static  int n=0;
+public class Sorting {
     public static void main(String[] args) throws IOException {
         try (PrintWriter out = newOutput()) {
             FastScanner in = newInput();
-            n=in.nextInt();
-            int[] a= new int[n];
-
+            int n=in.nextInt();
+            int[] a=new int[n];
             for (int i = 0; i < n; i++) {
                 a[i]=in.nextInt();
             }
-            int time=0;
-            int k=in.nextInt();
-            if(a.length==1){
-                out.print((int)Math.ceil(a[0]*1.0/k));
-            }else{
-                heapify(a);
-                int times;
-                while (a[0]-time>0){
-                     times=(a[0]-Math.max(a[1], a[2]))/(k-1);
-                    if(times>0){
-                        a[0]-=(k-1)*times;
-                        makeHeap(0, a);
-                        time+=times;
-                    }else{
-                        a[0]-=(k-1);
-                        makeHeap(0, a);
-                        time++;
-                    }
-                    //System.out.println(Arrays.toString(a));
-                }
-                out.print(time);
+            mergeSort(a, out);
+            for (int i = 0; i < a.length; i++) {
+                out.print(a[i] + " ");
             }
-
-        }
-    }
-    private static void swap(int[] a, int i, int j) {
-        int temp=a[i];
-        a[i]=a[j];
-        a[j]=temp;
-    }
-
-    private static void heapify(int[] a) {
-
-        for (int i = (n-1)/2; i >=0 ; i--) {
-             makeHeap(i, a);
         }
     }
 
-    private static void makeHeap(int i, int[] a) {
-        int left=2*i+1;
-        int right=2*i+2;
-        int max=i;
-        if(left<n && a[left]>a[i])max=left;
-        if(right<n && a[right]>a[max])max=right;
-        if(a[max]<=0)return;
-        if(max!=i){
-            int temp=a[i];
-            a[i]=a[max];
-            a[max]=temp;
-            makeHeap(max, a);
-        }
+    private static void mergeSort(int[] a, PrintWriter out) {
+        int[] b= new int[a.length];
+        mergeSort(a, 0, a.length-1, b, out);
     }
 
-    private static int extractMax(int[] a) {
-        int min=a[0];
-        a[0]=a[n-1];
-        n--;
-        makeHeap(0, a);
-        return min;
+    private static void mergeSort(int[] a, int lo, int hi, int[] b, PrintWriter out) {
+        if(lo>=hi)return;
+
+        int mid=lo+(hi-lo)/2;
+        mergeSort(a, lo, mid, b, out);
+        mergeSort(a, mid+1, hi, b, out);
+        merge(a, lo, mid, hi, b, out);
+
     }
-    private static int getMax(int[] a) {
-        return a[0];
+
+    private static void merge(int[] a, int lo, int mid, int hi, int[] b, PrintWriter out) {
+        for (int i = lo; i <=hi; i++) {
+            b[i]=a[i];
+        }
+        int i=lo;
+        int j=mid+1;
+        for (int k = lo; k <=hi; k++) {
+            if(i>mid)a[k]=b[j++];
+            else if(j>hi)a[k]=b[i++];
+            else if(b[i]<b[j])a[k]=b[i++];
+            else a[k]=b[j++];
+        }
+        out.println(lo+1 + " " + (hi+1) + " " + a[lo] + " " + a[hi]);
     }
 
     private static class FastScanner {

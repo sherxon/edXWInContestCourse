@@ -1,63 +1,59 @@
+package week3;
+
 import java.io.*;
 import java.util.StringTokenizer;
 
 /**
- * Created by sherxon on 3/25/17.
+ * Created by sherxon on 3/27/17.
  */
-public class Inversions {
-   static long count=0;
+public class AntiQuickSort {
+
     public static void main(String[] args) throws IOException {
         try (PrintWriter out = newOutput()) {
             FastScanner in = newInput();
             int n=in.nextInt();
-            int[] a=new int[n];
-            for (int i = 0; i < n; i++) {
-                a[i]=in.nextInt();
+
+            boolean x=n%2==0 && n>3;
+            int[] a= new int[n];
+            int ii=n-1;
+            int jj=0;
+            int count=1;
+            for (int i = 0; i < a.length; i++) {
+                if(x){
+                    a[ii--]=count++;
+                }else{
+                    a[jj++]=count++;
+                }
+                x=!x;
             }
-            mergeSort(a, out);
-            out.println(count);
+            for (int i = 0; i < a.length; i++) {
+                if(i!=a.length-1)
+                    out.print(a[i] + " ");
+                else
+                    out.print(a[i]);
+            }
+            //out.println(Arrays.toString(a));
         }
     }
 
-    private static void mergeSort(int[] a, PrintWriter out) {
-        int[] b= new int[a.length];
-        mergeSort(a, 0, a.length-1, b, out);
+    private static void rotate(int[] a, int k) {
+        reverse(a, 0, k-1);
+        reverse(a, k, a.length - 1);
+        //if(a.length%2==0 && a.length>2)
+      //  reverse(a, 0, a.length - 1);
+
+        //System.out.println(Arrays.toString(a));
+
+
     }
 
-    private static void mergeSort(int[] a, int lo, int hi, int[] b, PrintWriter out) {
-        if(lo>=hi)return;
-
+    private static void reverse(int[] a, int lo, int hi) {
         int mid=lo+(hi-lo)/2;
-        mergeSort(a, lo, mid, b, out);
-        mergeSort(a, mid+1, hi, b, out);
-        merge(a, lo, mid, hi, b, out);
-
-    }
-
-    private static void merge(int[] a, int lo, int mid, int hi, int[] b, PrintWriter out) {
-        for (int i = lo; i <=hi; i++) {
-            b[i]=a[i];
-        }
-
-        int prevCount=0;
-        int ii=mid+1;
-        for (int k = lo; k <=mid; k++) {
-            int co=0;
-            while (ii<=hi && b[ii]<b[k]){
-                co++;ii++;
-            }
-            prevCount+=co;
-            count+=prevCount;
-        }
-
-        int i=lo;
-        int j=mid+1;
-        for (int k = lo; k <=hi; k++) {
-
-            if(i>mid)a[k]=b[j++];
-            else if(j>hi)a[k]=b[i++];
-            else if(b[i]<b[j]) a[k]=b[i++];
-            else a[k]=b[j++];
+        for (int i = lo; i <=mid; i++) {
+            int temp=a[i];
+            a[i]=a[hi];
+            a[hi]=temp;
+            hi--;
         }
     }
 
