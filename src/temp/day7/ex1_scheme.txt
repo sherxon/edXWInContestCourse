@@ -1,0 +1,24 @@
+> db.books.find().pretty()
+{
+	"_id" : ObjectId("58ed2e4aca3fb5b861d1b747"),
+	"isbn" : 123,
+	"author" : "Sherxon",
+	"tags" : [
+		"Java",
+		"Algorithm",
+		"Graphs"
+	],
+	"returned" : 1,
+	"last_borrower" : "58ed2e4aca3fb5b861d1b749",
+	"due_date" : "2016-05-01",
+	"returned_date" : "2016-05-01"
+}
+
+
+ > db.students.find().pretty()
+{
+	"_id" : ObjectId("58ed2e4aca3fb5b861d1b749"),
+	"fname" : "Miga",
+}
+
+
