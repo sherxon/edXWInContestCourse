@@ -7,6 +7,7 @@ import java.util.StringTokenizer;
  * Created by sherxon on 3/16/17.
  */
 public class Snowmen {
+
     public static void main(String[] args) throws IOException {
         try (PrintWriter out = newOutput()) {
             FastScanner in = newInput();
